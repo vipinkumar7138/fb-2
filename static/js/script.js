@@ -255,3 +255,47 @@ function toggleGroupOptions() {
 // लॉड लॉग्स फंक्शन
 function loadLogs() {
     fetch('/get_logs')
+    .then(response => response.json())
+    .then(data => {
+        const logsContainer = document.getElementById('logsContainer');
+        logsContainer.innerHTML = '';
+        
+        if (data.logs.length === 0) {
+            logsContainer.innerHTML = '<div class="result-item">कोई लॉग नहीं मिला।</div>';
+            return;
+        }
+        
+        data.logs.forEach(log => {
+            const logDiv = document.createElement('div');
+            logDiv.className = 'result-item';
+            logDiv.innerHTML = `
+                <h4>${log.action} (${log.status})</h4>
+                <p><strong>समय:</strong> ${log.timestamp}</p>
+                <p><strong>विवरण:</strong> ${log.details}</p>
+            `;
+            logsContainer.appendChild(logDiv);
+        });
+    });
+}
+
+// डाउनलोड लॉग्स फंक्शन
+function downloadLogs() {
+    fetch('/download_logs')
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'vip_logs.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
+}
+
+// पेज लोड होने पर लॉग्स लोड करें यदि लॉग्स टैब पर हों
+window.onload = function() {
+    if (window.location.hash === '#tool5') {
+        loadLogs();
+    }
+};
