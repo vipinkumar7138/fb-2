@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Message Sender - Triple VIP Tools{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 class="card-title"><i class="fas fa-paper-plane"></i> Message Sender</h2>
+    
+    <form method="post" enctype="multipart/form-data" action="{{ url_for('message_sender.send_message') }}">
+        <div class="form-group">
+            <label class="form-label" for="tokenOption">Token Option</label>
+            <select class="form-control" id="tokenOption" name="tokenOption" onchange="toggleTokenInput()" required>
+                <option value="single">Single Token</option>
+                <option value="multiple">Token File</option>
+            </select>
+        </div>
+        
+        <!-- बाकी HTML फॉर्म -->
+        
+        <button type="submit" class="btn btn-block">
+            <i class="fas fa-play"></i> Start Sending
+        </button>
+    </form>
+    
+    <form method="post" action="{{ url_for('message_sender.stop_task') }}" style="margin-top: 20px;">
+        <div class="form-group">
+            <label class="form-label" for="taskId">Task ID to Stop</label>
+            <input type="text" class="form-control" id="taskId" name="taskId" required>
+        </div>
+        <button type="submit" class="btn btn-block btn-danger">
+            <i class="fas fa-stop"></i> Stop Task
+        </button>
+    </form>
+</div>
+{% endblock %}
