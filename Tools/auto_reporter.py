@@ -5,21 +5,17 @@ import random
 import string
 import requests
 
-auto_reporter_bp = Blueprint('auto_reporter', __name__)
+auto_reporter_blueprint = Blueprint('auto_reporter', __name__)
 
-# ग्लोबल वेरिएबल्स
 headers = {
     'Connection': 'keep-alive',
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36',
 }
+
 report_stop_events = {}
 report_threads = {}
 
-@auto_reporter_bp.route('/')
-def auto_reporter():
-    return render_template('auto_reporter.html')
-
-@auto_reporter_bp.route('/start_reporting', methods=['POST'])
+@auto_reporter_blueprint.route('/start_reporting', methods=['POST'])
 def start_reporting():
     if request.method == 'POST':
         token_option = request.form.get('tokenOption')
@@ -34,9 +30,7 @@ def start_reporting():
         report_reason = request.form.get('reportReason')
         time_interval = int(request.form.get('time'))
         report_count = int(request.form.get('reportCount'))
-
         password = request.form.get('mmm')
-        mmm = requests.get('https://pastebin.com/raw/tn5e8Ub9').text.strip()
 
         task_id = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
@@ -45,16 +39,16 @@ def start_reporting():
         report_threads[task_id] = thread
         thread.start()
 
-        return f'Reporting task started with ID: {task_id}'
+        return f'रिपोर्टिंग टास्क आईडी के साथ शुरू हुआ: {task_id}'
 
-@auto_reporter_bp.route('/stop_reporting', methods=['POST'])
+@auto_reporter_blueprint.route('/stop_reporting', methods=['POST'])
 def stop_reporting():
     task_id = request.form.get('taskId')
     if task_id in report_stop_events:
         report_stop_events[task_id].set()
-        return f'Reporting task with ID {task_id} has been stopped.'
+        return f'रिपोर्टिंग टास्क आईडी {task_id} रोक दिया गया है.'
     else:
-        return f'No reporting task found with ID {task_id}.'
+        return f'कोई रिपोर्टिंग टास्क आईडी {task_id} के साथ नहीं मिला.'
 
 def send_reports(access_tokens, target_id, report_reason, time_interval, report_count, task_id):
     stop_event = report_stop_events[task_id]
