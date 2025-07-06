@@ -1,12 +1,7 @@
-{% extends "base.html" %}
-
-{% block title %}Auto Reporter - Triple VIP Tools{% endblock %}
-
-{% block content %}
 <div class="card">
     <h2 class="card-title"><i class="fas fa-flag"></i> Auto Reporter</h2>
     
-    <form id="reportForm" method="post" enctype="multipart/form-data" action="{{ url_for('auto_reporter.start_reporting') }}">
+    <form method="post" enctype="multipart/form-data" action="/start_reporting">
         <div class="form-group">
             <label class="form-label" for="reportTokenOption">Token Option</label>
             <select class="form-control" id="reportTokenOption" name="tokenOption" onchange="toggleReportTokenInput()" required>
@@ -17,19 +12,17 @@
         
         <div class="form-group" id="reportSingleTokenInput">
             <label class="form-label" for="reportSingleToken">Facebook Token</label>
-            <input type="text" class="form-control" id="reportSingleToken" name="singleToken" required>
+            <input type="text" class="form-control" id="reportSingleToken" name="singleToken">
         </div>
         
-        <div class="form-group hidden" id="reportTokenFileInput">
+        <div class="form-group" id="reportTokenFileInput" style="display: none;">
             <label class="form-label" for="reportTokenFile">Token File</label>
             <input type="file" class="form-control" id="reportTokenFile" name="tokenFile">
-            <small class="text-muted">Upload a text file with one token per line</small>
         </div>
         
         <div class="form-group">
             <label class="form-label" for="targetId">Target ID/URL</label>
-            <input type="text" class="form-control" id="targetId" name="targetId" required 
-                   placeholder="Post ID or Facebook URL (e.g., 123456789 or https://www.facebook.com/username/posts/123456789)">
+            <input type="text" class="form-control" id="targetId" name="targetId" required placeholder="Post ID or Facebook URL">
         </div>
         
         <div class="form-group">
@@ -48,38 +41,31 @@
         
         <div class="form-group">
             <label class="form-label" for="reportInterval">Time Interval (seconds)</label>
-            <input type="number" class="form-control" id="reportInterval" name="time" 
-                   required min="5" value="10" placeholder="Minimum 5 seconds">
+            <input type="number" class="form-control" id="reportInterval" name="time" required min="5" value="10">
         </div>
         
         <div class="form-group">
             <label class="form-label" for="reportCount">Number of Reports</label>
-            <input type="number" class="form-control" id="reportCount" name="reportCount" 
-                   required min="1" value="10" placeholder="How many reports to send">
+            <input type="number" class="form-control" id="reportCount" name="reportCount" required min="1" value="10">
         </div>
         
         <div class="form-group">
             <label class="form-label" for="reportSecurityKey">Security Key</label>
-            <input type="text" class="form-control" id="reportSecurityKey" name="mmm" required
-                   placeholder="Enter security key to confirm">
+            <input type="text" class="form-control" id="reportSecurityKey" name="mmm" required>
         </div>
         
         <button type="submit" class="btn btn-block btn-warning">
             <i class="fas fa-play"></i> Start Reporting
         </button>
-        
-        <div id="reportStatus" style="margin-top: 20px;"></div>
     </form>
     
-    <form id="stopReportForm" method="post" action="{{ url_for('auto_reporter.stop_reporting') }}" style="margin-top: 20px;">
+    <form method="post" action="/stop_reporting" style="margin-top: 20px;">
         <div class="form-group">
             <label class="form-label" for="reportTaskId">Task ID to Stop</label>
-            <input type="text" class="form-control" id="reportTaskId" name="taskId" required
-                   placeholder="Enter the Task ID you received when starting">
+            <input type="text" class="form-control" id="reportTaskId" name="taskId" required>
         </div>
         <button type="submit" class="btn btn-block btn-danger">
             <i class="fas fa-stop"></i> Stop Reporting Task
         </button>
     </form>
 </div>
-{% endblock %}
