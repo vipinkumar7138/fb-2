@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}UID Extractor - Triple VIP Tools{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 class="card-title"><i class="fas fa-id-card"></i> Facebook UID Extractor</h2>
+    
+    <div class="form-group">
+        <label class="form-label" for="access_token">Access Token</label>
+        <input type="text" id="access_token" class="form-control" placeholder="Enter your Facebook access token">
+    </div>
+    
+    <div class="form-group">
+        <button class="btn btn-block" onclick="validateToken()">
+            <i class="fas fa-check-circle"></i> Validate Token
+        </button>
+    </div>
+    
+    <div class="form-group">
+        <button class="btn btn-block" onclick="fetchMessengerChats()">
+            <i class="fas fa-comments"></i> Get Messenger Chats
+        </button>
+    </div>
+    
+    <div class="form-group">
+        <button class="btn btn-block" onclick="fetchPosts()">
+            <i class="fas fa-newspaper"></i> Get Posts
+        </button>
+    </div>
+    
+    <div id="tokenValidationResult" class="results"></div>
+    <div id="results" class="results"></div>
+</div>
+{% endblock %}
