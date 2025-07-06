@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Triple VIP Tools{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="tab-header">
+            <a href="{{ url_for('uid_extractor.uid_extractor') }}" class="tab-btn {% if request.path.startswith('/uid_extractor') %}active{% endif %}">
+                <i class="fas fa-id-card"></i> UID Extractor
+            </a>
+            <a href="{{ url_for('message_sender.message_sender') }}" class="tab-btn {% if request.path.startswith('/message_sender') %}active{% endif %}">
+                <i class="fas fa-paper-plane"></i> Message Sender
+            </a>
+            <a href="{{ url_for('auto_reporter.auto_reporter') }}" class="tab-btn {% if request.path.startswith('/auto_reporter') %}active{% endif %}">
+                <i class="fas fa-flag"></i> Auto Reporter
+            </a>
+            <a href="{{ url_for('auto_reply.auto_reply') }}" class="tab-btn {% if request.path.startswith('/auto_reply') %}active{% endif %}">
+                <i class="fas fa-robot"></i> Auto Reply
+            </a>
+            <a href="{{ url_for('vip_logs.vip_logs') }}" class="tab-btn {% if request.path.startswith('/vip_logs') %}active{% endif %}">
+                <i class="fas fa-clipboard-list"></i> VIP Logs
+            </a>
+        </div>
+        
+        {% block content %}{% endblock %}
+    </div>
+    
+    <!-- Notification Div -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i> <span id="notification-text">Copied to clipboard!</span>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
