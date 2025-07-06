@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Auto Reply - Triple VIP Tools{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 class="card-title"><i class="fas fa-robot"></i> Auto Reply</h2>
+    
+    <div id="autoReplyStatus" class="status-message" style="display: none;"></div>
+    
+    <form id="autoReplyForm" method="post" enctype="multipart/form-data" action="{{ url_for('auto_reply.set_auto_reply') }}">
+        <div class="form-group">
+            <label class="form-label" for="auto_reply_token">Facebook Token</label>
+            <input type="text" class="form-control" id="auto_reply_token" name="auto_reply_token" required>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="messages_file">Messages File (TXT)</label>
+            <input type="file" class="form-control" id="messages_file" name="messages_file" accept=".txt" required>
+            <small class="text-muted">Each line will be treated as a separate reply message</small>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="reply_mode">Reply Mode</label>
+            <select class="form-control" id="reply_mode" name="reply_mode" onchange="toggleGroupOptions()">
+                <option value="all">All Groups</option>
+                <option value="exclude">Exclude Specific Groups</option>
+                <option value="include">Include Specific Groups Only</option>
+            </select>
+        </div>
+        
+        <div class="form-group hidden" id="group_ids_section">
+            <label class="form-label" for="group_ids">Group IDs (Comma Separated)</label>
+            <input type="text" class="form-control" id="group_ids" name="group_ids" 
+                   placeholder="e.g., 123456789,987654321">
+            <small class="text-muted">For Include/Exclude modes only</small>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="keyword">Trigger Keyword</label>
+            <input type="text" class="form-control" id="keyword" name="keyword" 
+                   placeholder="e.g., 'hello' or 'help'" required>
+            <small class="text-muted">Message must contain this keyword to trigger reply</small>
+        </div>
+        
+        <button type="submit" class="btn btn-block">
+            <i class="fas fa-save"></i> Save Auto Reply Settings
+        </button>
+    </form>
+    
+    <div class="action-buttons" style="margin-top: 20px;">
+        <form id="startAutoReplyForm" method="post" action="{{ url_for('auto_reply.start_auto_reply') }}" style="display: inline-block; width: 49%;">
+            <button type="submit" class="btn btn-block">
+                <i class="fas fa-play"></i> Start Auto Reply
+            </button>
+        </form>
+        
+        <form id="stopAutoReplyForm" method="post" action="{{ url_for('auto_reply.stop_auto_reply') }}" style="display: inline-block; width: 49%; float: right;">
+            <button type="submit" class="btn btn-block btn-danger">
+                <i class="fas fa-stop"></i> Stop Auto Reply
+            </button>
+        </form>
+    </div>
+    
+    <div class="current-settings" style="margin-top: 30px;">
+        <h4><i class="fas fa-cog"></i> Current Settings</h4>
+        <div id="currentSettings"></div>
+    </div>
+</div>
+{% endblock %}
