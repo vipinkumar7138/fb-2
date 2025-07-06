@@ -1,24 +1,27 @@
-from flask import Blueprint, jsonify, make_response
+from flask import Blueprint, make_response
 from io import StringIO
 import csv
 import datetime
-import json
 
-vip_logs_bp = Blueprint('vip_logs', __name__)
+vip_logs_blueprint = Blueprint('vip_logs', __name__)
 
 logs = []
 
-@vip_logs_bp.route('/')
-def vip_logs():
-    return render_template('vip_logs.html')
+def add_log(action, status, details):
+    log_entry = {
+        "timestamp": str(datetime.datetime.now()),
+        "action": action,
+        "status": status,
+        "details": details
+    }
+    logs.append(log_entry)
 
-@vip_logs_bp.route('/get_logs')
+@vip_logs_blueprint.route('/get_logs')
 def get_logs():
-    return jsonify({"logs": logs})
+    return {"logs": logs}
 
-@vip_logs_bp.route('/download_logs')
+@vip_logs_blueprint.route('/download_logs')
 def download_logs():
-    # Create CSV data
     csv_data = StringIO()
     writer = csv.writer(csv_data)
     writer.writerow(["Timestamp", "Action", "Status", "Details"])
@@ -30,15 +33,3 @@ def download_logs():
     response.headers["Content-Disposition"] = "attachment; filename=vip_logs.csv"
     response.headers["Content-type"] = "text/csv"
     return response
-
-def add_log(action, status, details):
-    log_entry = {
-        "timestamp": str(datetime.datetime.now()),
-        "action": action,
-        "status": status,
-        "details": details
-    }
-    logs.append(log_entry)
-    # Save to file (optional)
-    with open("logs.json", "a") as f:
-        f.write(json.dumps(log_entry) + "\n")
